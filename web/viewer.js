@@ -73,20 +73,19 @@ function getViewerConfiguration() {
       zoomIn: document.getElementById('zoomIn'),
       zoomOut: document.getElementById('zoomOut'),
       viewFind: document.getElementById('viewFind'),
-      openFile: document.getElementById('openFile'),
+      // openFile: document.getElementById('openFile'),
       print: document.getElementById('print'),
       presentationModeButton: document.getElementById('presentationMode'),
       download: document.getElementById('download'),
       viewBookmark: document.getElementById('viewBookmark'),
+      closeButton: document.getElementById('closeWindow'),
     },
     secondaryToolbar: {
       toolbar: document.getElementById('secondaryToolbar'),
       toggleButton: document.getElementById('secondaryToolbarToggle'),
-      toolbarButtonContainer:
-        document.getElementById('secondaryToolbarButtonContainer'),
-      presentationModeButton:
-        document.getElementById('secondaryPresentationMode'),
-      openFileButton: document.getElementById('secondaryOpenFile'),
+      toolbarButtonContainer: document.getElementById('secondaryToolbarButtonContainer'),
+      presentationModeButton: document.getElementById('secondaryPresentationMode'),
+      // openFileButton: document.getElementById('secondaryOpenFile'),
       printButton: document.getElementById('secondaryPrint'),
       downloadButton: document.getElementById('secondaryDownload'),
       viewBookmarkButton: document.getElementById('secondaryViewBookmark'),
@@ -178,7 +177,7 @@ function getViewerConfiguration() {
       lessInfoButton: document.getElementById('errorShowLess'),
     },
     printContainer: document.getElementById('printContainer'),
-    openFileInputName: 'fileInput',
+    // openFileInputName: 'fileInput',
     debuggerScriptPath: './debugger.js',
   };
 }
@@ -191,7 +190,7 @@ function webViewerLoad() {
       SystemJS.import('pdfjs-web/app_options'),
       SystemJS.import('pdfjs-web/genericcom'),
       SystemJS.import('pdfjs-web/pdf_print_service'),
-    ]).then(function([app, appOptions, ...otherModules]) {
+    ]).then(function ([app, appOptions, ...otherModules]) {
       window.PDFViewerApplication = app.PDFViewerApplication;
       window.PDFViewerApplicationOptions = appOptions.AppOptions;
       app.PDFViewerApplication.run(config);
@@ -218,7 +217,7 @@ function webViewerLoad() {
 }
 
 if (document.readyState === 'interactive' ||
-    document.readyState === 'complete') {
+  document.readyState === 'complete') {
   webViewerLoad();
 } else {
   document.addEventListener('DOMContentLoaded', webViewerLoad, true);

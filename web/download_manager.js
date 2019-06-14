@@ -19,7 +19,7 @@ import {
 
 if (typeof PDFJSDev !== 'undefined' && !PDFJSDev.test('CHROME || GENERIC')) {
   throw new Error('Module "pdfjs-web/download_manager" shall not be used ' +
-                  'outside CHROME and GENERIC builds.');
+    'outside CHROME and GENERIC builds.');
 }
 
 const DISABLE_CREATE_OBJECT_URL =
@@ -59,10 +59,10 @@ class DownloadManager {
   downloadData(data, filename, contentType) {
     if (navigator.msSaveBlob) { // IE10 and above
       return navigator.msSaveBlob(new Blob([data], { type: contentType, }),
-                                  filename);
+        filename);
     }
     let blobUrl = createObjectURL(data, contentType,
-                                  this.disableCreateObjectURL);
+      this.disableCreateObjectURL);
     download(blobUrl, filename);
   }
 

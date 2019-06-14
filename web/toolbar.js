@@ -65,6 +65,18 @@ class Toolbar {
     this._bindListeners();
   }
 
+  setDownloadable(mode) {
+    //Added by: AGD
+    this.items.download.disabled = mode;
+  }
+
+  checkWindowParent() {
+    if (window.parent == window) {
+      this.items.closeButton.previousElementSibling.style.display = "none";
+      this.items.closeButton.style.display = "none";
+    }
+  }
+
   setPageNumber(pageNumber, pageLabel) {
     this.pageNumber = pageNumber;
     this.pageLabel = pageLabel;
@@ -97,34 +109,34 @@ class Toolbar {
     let { eventBus, items, } = this;
     let self = this;
 
-    items.previous.addEventListener('click', function() {
+    items.previous.addEventListener('click', function () {
       eventBus.dispatch('previouspage', { source: self, });
     });
 
-    items.next.addEventListener('click', function() {
+    items.next.addEventListener('click', function () {
       eventBus.dispatch('nextpage', { source: self, });
     });
 
-    items.zoomIn.addEventListener('click', function() {
+    items.zoomIn.addEventListener('click', function () {
       eventBus.dispatch('zoomin', { source: self, });
     });
 
-    items.zoomOut.addEventListener('click', function() {
+    items.zoomOut.addEventListener('click', function () {
       eventBus.dispatch('zoomout', { source: self, });
     });
 
-    items.pageNumber.addEventListener('click', function() {
+    items.pageNumber.addEventListener('click', function () {
       this.select();
     });
 
-    items.pageNumber.addEventListener('change', function() {
+    items.pageNumber.addEventListener('change', function () {
       eventBus.dispatch('pagenumberchanged', {
         source: self,
         value: this.value,
       });
     });
 
-    items.scaleSelect.addEventListener('change', function() {
+    items.scaleSelect.addEventListener('change', function () {
       if (this.value === 'custom') {
         return;
       }
@@ -134,19 +146,19 @@ class Toolbar {
       });
     });
 
-    items.presentationModeButton.addEventListener('click', function() {
+    items.presentationModeButton.addEventListener('click', function () {
       eventBus.dispatch('presentationmode', { source: self, });
     });
 
-    items.openFile.addEventListener('click', function() {
-      eventBus.dispatch('openfile', { source: self, });
-    });
+    // items.openFile.addEventListener('click', function() {
+    //   eventBus.dispatch('openfile', { source: self, });
+    // });
 
-    items.print.addEventListener('click', function() {
+    items.print.addEventListener('click', function () {
       eventBus.dispatch('print', { source: self, });
     });
 
-    items.download.addEventListener('click', function() {
+    items.download.addEventListener('click', function () {
       eventBus.dispatch('download', { source: self, });
     });
 
@@ -177,9 +189,9 @@ class Toolbar {
       } else {
         items.pageNumber.type = 'number';
         this.l10n.get('of_pages', { pagesCount, }, 'of {{pagesCount}}').
-            then((msg) => {
-          items.numPages.textContent = msg;
-        });
+          then((msg) => {
+            items.numPages.textContent = msg;
+          });
       }
       items.pageNumber.max = pagesCount;
     }
@@ -187,9 +199,9 @@ class Toolbar {
     if (this.hasPageLabels) {
       items.pageNumber.value = this.pageLabel;
       this.l10n.get('page_of_pages', { pageNumber, pagesCount, },
-                    '({{pageNumber}} of {{pagesCount}})').then((msg) => {
-        items.numPages.textContent = msg;
-      });
+        '({{pageNumber}} of {{pagesCount}})').then((msg) => {
+          items.numPages.textContent = msg;
+        });
     } else {
       items.pageNumber.value = pageNumber;
     }
@@ -202,23 +214,23 @@ class Toolbar {
 
     let customScale = Math.round(pageScale * 10000) / 100;
     this.l10n.get('page_scale_percent', { scale: customScale, },
-                  '{{scale}}%').then((msg) => {
-      let options = items.scaleSelect.options;
-      let predefinedValueFound = false;
-      for (let i = 0, ii = options.length; i < ii; i++) {
-        let option = options[i];
-        if (option.value !== pageScaleValue) {
-          option.selected = false;
-          continue;
+      '{{scale}}%').then((msg) => {
+        let options = items.scaleSelect.options;
+        let predefinedValueFound = false;
+        for (let i = 0, ii = options.length; i < ii; i++) {
+          let option = options[i];
+          if (option.value !== pageScaleValue) {
+            option.selected = false;
+            continue;
+          }
+          option.selected = true;
+          predefinedValueFound = true;
         }
-        option.selected = true;
-        predefinedValueFound = true;
-      }
-      if (!predefinedValueFound) {
-        items.customScaleOption.textContent = msg;
-        items.customScaleOption.selected = true;
-      }
-    });
+        if (!predefinedValueFound) {
+          items.customScaleOption.textContent = msg;
+          items.customScaleOption.selected = true;
+        }
+      });
   }
 
   updateLoadingIndicatorState(loading = false) {
@@ -231,7 +243,7 @@ class Toolbar {
     let container = this.items.scaleSelectContainer;
     let select = this.items.scaleSelect;
 
-    animationStarted.then(function() {
+    animationStarted.then(function () {
       // Adjust the width of the zoom box to fit the content.
       // Note: If the window is narrow enough that the zoom box is not
       //       visible, we temporarily show it to be able to adjust its width.
@@ -242,9 +254,9 @@ class Toolbar {
         select.setAttribute('style', 'min-width: inherit;');
         let width = select.clientWidth + SCALE_SELECT_CONTAINER_PADDING;
         select.setAttribute('style', 'min-width: ' +
-                                     (width + SCALE_SELECT_PADDING) + 'px;');
+          (width + SCALE_SELECT_PADDING) + 'px;');
         container.setAttribute('style', 'min-width: ' + width + 'px; ' +
-                                        'max-width: ' + width + 'px;');
+          'max-width: ' + width + 'px;');
       }
     });
   }

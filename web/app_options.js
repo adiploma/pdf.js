@@ -35,7 +35,7 @@ const defaultOptions = {
   },
   defaultUrl: {
     /** @type {string} */
-    value: 'compressed.tracemonkey-pldi-09.pdf',
+    value: '',
     kind: OptionKind.VIEWER,
   },
   defaultZoomValue: {
@@ -153,7 +153,7 @@ const defaultOptions = {
   cMapUrl: {
     /** @type {string} */
     value: (typeof PDFJSDev === 'undefined' || !PDFJSDev.test('PRODUCTION') ?
-            '../external/bcmaps/' : '../web/cmaps/'),
+      '../external/bcmaps/' : '../web/cmaps/'),
     kind: OptionKind.API,
   },
   disableAutoFetch: {
@@ -215,12 +215,12 @@ const defaultOptions = {
   workerSrc: {
     /** @type {string} */
     value: (typeof PDFJSDev === 'undefined' || !PDFJSDev.test('PRODUCTION') ?
-            '../src/worker_loader.js' : '../build/pdf.worker.js'),
+      '../src/worker_loader.js' : '../build/pdf.worker.js'),
     kind: OptionKind.WORKER,
   },
 };
 if (typeof PDFJSDev === 'undefined' ||
-    PDFJSDev.test('!PRODUCTION || GENERIC')) {
+  PDFJSDev.test('!PRODUCTION || GENERIC')) {
   defaultOptions.disablePreferences = {
     /** @type {boolean} */
     value: false,
@@ -256,13 +256,20 @@ class AppOptions {
         continue;
       }
       options[name] = (userOption !== undefined ?
-                       userOption : defaultOption.value);
+        userOption : defaultOption.value);
     }
     return options;
   }
 
-  static set(name, value) {
-    userOptions[name] = value;
+  static set(name, value, _static) {
+    if (_static) {
+      var desc = Object.create(null);
+      desc.value = value;
+      Object.defineProperty(userOptions, name, desc);
+      desc = null;
+    } else {
+      userOptions[name] = value;
+    }
   }
 
   static remove(name) {
